@@ -1,0 +1,14 @@
+combine_lang_model \
+  --input_unicharset unicharset \
+  --script_dir . \
+  --output_dir . \
+  --pass_through_recoder \
+  --lang test
+  
+  
+  
+lstmtraining \
+ --traineddata test/test.traineddata \
+  --net_spec "[1,40,0,1 Ct5,5,64 Mp3,3 Lfys128 Lbx256 Lbx256 O1c$num_classes]" \
+  --model_output /home/reza/OUClasses/capstone/CS4273OCR/train/train \
+  --train_listfile all-lstmf
