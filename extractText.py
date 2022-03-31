@@ -1,13 +1,21 @@
 import cv2
 import os
 import pytesseract
-import configparser
+from pdf2image import convert_from_path
+import sys
+import numpy as np
+from io import BytesIO
+from PIL import Image
 
 #config = r'--psm 7'
 
-def extractText(imName, topLeftCorner, topRightCorner, verbose = False):
-    im = cv2.imread(imName,0)
-    cropped = im[topLeftCorner[1]:topRightCorner[1], topLeftCorner[0]:topRightCorner[0]]
+#assumes corners are topLeft.x, topleft.y, bottomright.x, bottomright.y
+def extractText(image, corners, verbose = False):
+    im = np.array(image)
+    print(im.shape)
+    print(corners)
+
+    cropped = im[int(corners[1]):int(corners[3]), int(corners[0]):int(corners[2])]
     
     if verbose:
         cv2.imshow( 'im',cropped)
@@ -22,23 +30,56 @@ def extractText(imName, topLeftCorner, topRightCorner, verbose = False):
 
     return text
     
-def extractDir(dirName, configFile, verbose=False):
-    strings = []
+#args[1] = template file
+#args[2] = output file name
+#The remaining args are the pdf files to be parsed    
+def extractImages(args, verbose=False):
+    out = ''
     
-    config = configparser.ConfigParser()
-    config.read(configFile)
-    topLeftX = int(config['BOUNDING_BOXES']['topLeftX'])
-    topLeftY = int(config['BOUNDING_BOXES']['topLeftY'])
-    bottomRightX = int(config['BOUNDING_BOXES']['bottomRightX'])
-    bottomRightY = int(config['BOUNDING_BOXES']['bottomRightY'])
+    template = args[0]
+    outFile = args[1]
+    files= args[2:]
     
-    for f in os.listdir(dirName):
-        imName = dirName + '/' + f
-        s = extractText(imName, [topLeftX,topLeftY], [bottomRightX,bottomRightY], verbose=verbose)
-        strings.append(s)
-    return strings
+    boxes = open(template, 'r').readlines()
+    
+    for f in files:
+        line = ''
+        
+        page = convert_from_path(f)
+        
+        f=BytesIO()
+        page[0].save(f,format="png")
+        f.seek(0)
+        image = Image.open(f)
+        
+        previousIndex=''
+        
+        for b in boxes:
+            params = b.strip().split()
+            
+            print(params)
+            if len(params) == 1:
+                line += ','
+            elif not params[1].isnumeric() or len(params) != 5:
+                line += params[1]
+                for p in params[2:]:
+                    line+= ' ' + p 
+                line += ','
+            else:
+                s = extractText(image, params[1:],verbose)
+                print(s)
+                line+=s+','
+                    
+            
+            previousIndex = params[0]
+            
+        
+        out += line[:-1] + '\n'
+
+    return out
     
 if __name__ == '__main__':
-    extractText('images/bestCase.png', [0, 0], [850,201], verbose=True)
+    #extractText('images/bestCase.png', [0, 0], [850,201], verbose=True)
     #extractText('images/bestCase.png', [0,0], [196,57], verbose=True)
-    #print(extractDir('images', 'config.ini'))
+    del sys.argv[0]
+    print(extractImages(sys.argv, True))
