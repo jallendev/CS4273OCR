@@ -16,6 +16,9 @@ def extractText(image, corners, verbose = False):
     print(corners)
 
     cropped = im[int(corners[1]):int(corners[3]), int(corners[0]):int(corners[2])]
+    cropped = cv2.blur(cropped, (3,2))
+    #cropped = cv2.medianBlur(cropped, 3)
+    cropped =  cv2.bilateralFilter(cropped,3,200,10)
     
     if verbose:
         cv2.imshow( 'im',cropped)
@@ -37,45 +40,49 @@ def extractImages(args, verbose=False):
     out = ''
     
     template = args[0]
-    outFile = args[1]
+    outFile = open(args[1], "a")
     files= args[2:]
     
-    boxes = open(template, 'r').readlines()
+    #Saves the lines from the template
+    templateLines = open(template, 'r').readlines()
     
+    #Loops through each of the given files
     for f in files:
         line = ''
         
+        #Opens the pdf and converts the first page to an image
         page = convert_from_path(f)
-        
         f=BytesIO()
         page[0].save(f,format="png")
         f.seek(0)
         image = Image.open(f)
         
-        previousIndex=''
-        
-        for b in boxes:
-            params = b.strip().split()
+        #loops through each of the lines in the template
+        for tl in templateLines:
+            params = tl.strip().split() #Breaks the line into each component
             
-            print(params)
+            #If there isn't anything to write to the output file just prints a ,
             if len(params) == 1:
                 line += ','
+            
+            #This just saves the parameters if not given a bounding box
             elif not params[1].isnumeric() or len(params) != 5:
                 line += params[1]
                 for p in params[2:]:
                     line+= ' ' + p 
                 line += ','
+                
+            #This actually extracts the text from the pdf to put in the csv
             else:
                 s = extractText(image, params[1:],verbose)
                 print(s)
-                line+=s+','
-                    
-            
-            previousIndex = params[0]
-            
+                line+=s+','                                            
         
+        #Adds the line minus the last , to the output file
         out += line[:-1] + '\n'
 
+    outFile.write(out)
+    outFile.close()
     return out
     
 if __name__ == '__main__':
