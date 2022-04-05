@@ -12,23 +12,20 @@ from PIL import Image
 #assumes corners are topLeft.x, topleft.y, bottomright.x, bottomright.y
 def extractText(image, corners, verbose = False):
     im = np.array(image)
-    print(im.shape)
-    print(corners)
+    #print(im.shape)
+    #print(corners)
 
     #Crops and smooths the images
     cropped = im[int(corners[1]):int(corners[3]), int(corners[0]):int(corners[2])]
     cropped = cv2.blur(cropped, (3,2))
     cropped =  cv2.bilateralFilter(cropped,3,200,10)
-    
-    if verbose:
-        cv2.imshow( 'im',cropped)
         
     # Simple image to string
     text = pytesseract.image_to_string(cropped)#, config=config)
     text = text.strip()
 
     if verbose:
-        print(text)
+        cv2.imshow( 'im',cropped)
         cv2.waitKey(5000)
 
     return text
