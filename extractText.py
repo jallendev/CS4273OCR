@@ -15,9 +15,9 @@ def extractText(image, corners, verbose = False):
     print(im.shape)
     print(corners)
 
+    #Crops and smooths the images
     cropped = im[int(corners[1]):int(corners[3]), int(corners[0]):int(corners[2])]
     cropped = cv2.blur(cropped, (3,2))
-    #cropped = cv2.medianBlur(cropped, 3)
     cropped =  cv2.bilateralFilter(cropped,3,200,10)
     
     if verbose:
@@ -37,8 +37,9 @@ def extractText(image, corners, verbose = False):
 #args[2] = output file name
 #The remaining args are the pdf files to be parsed    
 def extractImages(args, verbose=False):
-    out = ''
+    out = '' #used to hold the full output
     
+    #Extracts args
     template = args[0]
     outFile = open(args[1], "a")
     files= args[2:]
@@ -81,12 +82,12 @@ def extractImages(args, verbose=False):
         #Adds the line minus the last , to the output file
         out += line[:-1] + '\n'
 
+    #Writes out the text
     outFile.write(out)
     outFile.close()
+    
     return out
     
 if __name__ == '__main__':
-    #extractText('images/bestCase.png', [0, 0], [850,201], verbose=True)
-    #extractText('images/bestCase.png', [0,0], [196,57], verbose=True)
     del sys.argv[0]
-    print(extractImages(sys.argv, True))
+    print(extractImages(sys.argv, verbose = True))
