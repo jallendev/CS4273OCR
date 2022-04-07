@@ -38,15 +38,18 @@ def extractImages(args, verbose=False):
     
     #Extracts args
     template = args[0]
-    outFile = open(args[1], "a")
+    outFile = open(args[1], "w") #overwrites the old file
     files= args[2:]
     
     #Saves the lines from the template
     templateLines = open(template, 'r').readlines()
     
+    header = ''
+    
     #Loops through each of the given files
     for f in files:
         line = ''
+        header = '' #This should really be the same for each file but just takes the header for the last file
         
         #Opens the pdf and converts the first page to an image
         page = convert_from_path(f)
@@ -57,29 +60,35 @@ def extractImages(args, verbose=False):
         
         #loops through each of the lines in the template
         for tl in templateLines:
-            params = tl.strip().split() #Breaks the line into each component
+            params = tl.strip().split('|') #Breaks the line into each component
+            print(params)
             
-            #If there isn't anything to write to the output file just prints a ,
+            #If there isn't anything to write to the output file just prints a ","
             if len(params) == 1:
                 line += ','
             
-            #This just saves the parameters if not given a bounding box
-            elif not params[1].isnumeric() or len(params) != 5:
+            #This just saves the parameters if not given a bounding box. Might be a bad idea to include commas in this
+            elif len(params) == 2:
                 line += params[1]
                 for p in params[2:]:
                     line+= ' ' + p 
                 line += ','
                 
             #This actually extracts the text from the pdf to put in the csv
-            else:
+            elif len(params) == 5:
                 s = extractText(image, params[1:],verbose)
                 print(s)
-                line+=s+','                                            
+                line+=s+','           
+            
+            else:
+                print('Should not have gotten here')                                 
         
         #Adds the line minus the last , to the output file
         out += line[:-1] + '\n'
 
     #Writes out the text
+    header += '\n'
+    outFile.write(header)
     outFile.write(out)
     outFile.close()
     

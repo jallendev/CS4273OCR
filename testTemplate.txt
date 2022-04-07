@@ -1,5 +1,5 @@
-A 1300 1170 1420 1230
-C stuff to fill out
+EOB Template|1300|1170|1420|1230
+C|stuff to fill out
 D
-E 1420 1170 1600 1230
-F test
+E|1420|1170|1600|1230
+F|test
