@@ -61,6 +61,7 @@ def extractImages(args, verbose=False):
         #loops through each of the lines in the template
         for tl in templateLines:
             params = tl.strip().split('|') #Breaks the line into each component
+            header += params[0]+','
             print(params)
             
             #If there isn't anything to write to the output file just prints a ","
@@ -87,7 +88,7 @@ def extractImages(args, verbose=False):
         out += line[:-1] + '\n'
 
     #Writes out the text
-    header += '\n'
+    header = header[:-1] + '\n'
     outFile.write(header)
     outFile.write(out)
     outFile.close()
