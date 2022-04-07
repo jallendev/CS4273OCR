@@ -49,7 +49,7 @@ def extractImages(args, verbose=False):
     #Loops through each of the given files
     for f in files:
         line = ''
-        header = '' #This should really be the same for each file but just takes the header for the last file
+        header = '' #Its really only needed to do this once but I'm lazy
         
         #Opens the pdf and converts the first page to an image
         page = convert_from_path(f)
@@ -70,10 +70,7 @@ def extractImages(args, verbose=False):
             
             #This just saves the parameters if not given a bounding box. Might be a bad idea to include commas in this
             elif len(params) == 2:
-                line += params[1]
-                for p in params[2:]:
-                    line+= ' ' + p 
-                line += ','
+                line += params[1] + ','
                 
             #This actually extracts the text from the pdf to put in the csv
             elif len(params) == 5:
