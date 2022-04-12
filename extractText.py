@@ -7,7 +7,7 @@ import numpy as np
 from io import BytesIO
 from PIL import Image
 
-#config = r'--psm 7'
+config = r'--psm 4'
 
 #assumes corners are topLeft.x, topleft.y, bottomright.x, bottomright.y
 def extractText(image, corners, verbose = False):
@@ -21,7 +21,7 @@ def extractText(image, corners, verbose = False):
     cropped =  cv2.bilateralFilter(cropped,3,200,10)
         
     # Simple image to string
-    text = pytesseract.image_to_string(cropped)#, config=config)
+    text = pytesseract.image_to_string(cropped, config=config)
     text = text.strip()
 
     if verbose:
@@ -54,7 +54,7 @@ def extractImages(args, verbose=False):
         #Opens the pdf and converts the first page to an image
         page = convert_from_path(f)
         f=BytesIO()
-        page[0].save(f,format="png")
+        page[3].save(f,format="png")
         f.seek(0)
         image = Image.open(f)
         
