@@ -13,4 +13,18 @@ theme: gaia
     - `code`
 --- 
 
+---
+# Google Vision API
 
+---
+
+---
+# Test cases
+
+---
+
+
+---
+# Google Vision API vs Python tesseract
+
+---
