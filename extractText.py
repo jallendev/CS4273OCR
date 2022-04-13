@@ -46,43 +46,56 @@ def extractImages(args, verbose=False):
     
     header = ''
     
+    maxEntries = 1      #Presumably the file has at least 1 entry
+
     #Loops through each of the given files
     for f in files:
-        line = ''
-        header = '' #Its really only needed to do this once but I'm lazy
+        i = 0
+        while i < maxEntries:       #While Loop for multiple entries
+            line = ''
+            header = '' #Its really only needed to do this once but I'm lazy
         
-        #Opens the pdf and converts the first page to an image
-        page = convert_from_path(f)
-        f=BytesIO()
-        page[3].save(f,format="png")
-        f.seek(0)
-        image = Image.open(f)
+            #Opens the pdf and converts the first page to an image, only done on the first pass
+            if i == 0:
+                page = convert_from_path(f)
+                f=BytesIO()
+                page[3].save(f,format="png")
+                f.seek(0)
+                image = Image.open(f)
         
-        #loops through each of the lines in the template
-        for tl in templateLines:
-            params = tl.strip().split('|') #Breaks the line into each component
-            header += params[0]+','
-            print(params)
-            
-            #If there isn't anything to write to the output file just prints a ","
-            if len(params) == 1:
-                line += ','
-            
-            #This just saves the parameters if not given a bounding box. Might be a bad idea to include commas in this
-            elif len(params) == 2:
-                line += params[1] + ','
+            #loops through each of the lines in the template
+            for tl in templateLines:
+                params = tl.strip().split('|') #Breaks the line into each component
+                header += params[0]+','
+                print(params)
                 
-            #This actually extracts the text from the pdf to put in the csv
-            elif len(params) == 5:
-                s = extractText(image, params[1:],verbose)
-                print(s)
-                line+=s+','           
+                #If there isn't anything to write to the output file just prints a ","
+                if len(params) == 1:
+                    line += ','
             
-            else:
-                print('Should not have gotten here')                                 
-        
-        #Adds the line minus the last , to the output file
-        out += line[:-1] + '\n'
+                #This just saves the parameters if not given a bounding box. Might be a bad idea to include commas in this
+                elif len(params) == 2:
+                    line += params[1] + ','
+                
+                #This actually extracts the text from the pdf to put in the csv
+                elif len(params) == 5:
+                    s = extractText(image, params[1:],verbose)
+                    currEntries = s.count('\n') + 1     #Each newline implies the existence of an additional entry within a bounding box
+                    
+                    if currEntries > maxEntries:        #The current bounding box has more entries than the previous maximum
+                        maxEntries = currEntries
+
+                    if currEntries > 1:                 #Does this bounding box has more than one entry
+                        splitS = s.split('\n')
+                        s = splitS[i]       #Chooses the current entry to print
+                    print(s)
+                    line+=s+','           
+            
+                else:
+                    print('Should not have gotten here')                                 
+            i += 1
+            #Adds the line minus the last , to the output file
+            out += line[:-1] + '\n'
 
     #Writes out the text
     header = header[:-1] + '\n'
