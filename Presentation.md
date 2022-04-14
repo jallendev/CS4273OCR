@@ -25,6 +25,13 @@ theme: gaia
 
 
 ---
-# Google Vision API vs Python tesseract
+# Why Google Cloud Vision API over pytesseract
+**Pros**
+- More supported languages
+- Better performance in real-world scenarios
+
+**Cons**
+- Overlaid text
+- Cost
 
 ---
