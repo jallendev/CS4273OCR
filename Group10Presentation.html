@@ -23,7 +23,19 @@ pytesseract</p>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="4" data-theme="gaia" style="--theme:gaia;">
 <h1>Backend</h1>
-<p>Code</p>
+<p>Extracting the text from images is easy</p>
+<pre><code><svg data-marp-fitting="svg" data-marp-fitting-code><foreignObject><span data-marp-fitting-svg-content><span data-marp-fitting-svg-content-wrap>    config = '--psm 4' # sets the config
+    
+    #Gets exact image and smooths the lines
+    cropped = im[int(corners[1]):int(corners[3]), int(corners[0]):int(corners[2])]
+    cropped = cv2.blur(cropped, (3,2))
+    cropped =  cv2.bilateralFilter(cropped,3,200,10)
+        
+    # extracts the text from the image
+    text = pytesseract.image_to_string(cropped, config=config)
+    text = text.strip()
+</span></span></foreignObject></svg></code></pre>
+<p>Other code just ensures the extracted text goes in the csv correctly</p>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="5" data-theme="gaia" style="--theme:gaia;">
 <h1>FrontEnd/Demo</h1>
