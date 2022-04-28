@@ -59,9 +59,11 @@ def extractImages(args, verbose=False):
             if i == 0:
                 page = convert_from_path(f)
                 f=BytesIO()
-                page[3].save(f,format="png")
+                page[1].save(f,format="png")
                 f.seek(0)
                 image = Image.open(f)
+                
+            print(pytesseract.image_to_osd(image))
         
             #loops through each of the lines in the template
             for tl in templateLines:
