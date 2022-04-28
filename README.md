@@ -12,8 +12,8 @@ The template file is | seperated fields where <br>
 The first field is the column header <br>
 After that there are three options: <br>
 1. There are no other fields if nothing is to be inserted for a specific column <br>
-2. 2nd: There can be a second field with random text if the column is to always be filled with the same text <br>
-3. 3rd: There are four additional fields that specifies the bounding box where the code will extract text from the PDFs: <br>
+2. There can be a second field with random text if the column is to always be filled with the same text <br>
+3. There are four additional fields that specifies the bounding box where the code will extract text from the PDFs: <br>
 - The first additional field is the top left x coordinate of the bounding box 
 - The second additional field is the top left y coordinate of the bounding box
 - The third additional field is the bottom right x coordinate of the bounding box

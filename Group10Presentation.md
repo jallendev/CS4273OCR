@@ -4,10 +4,31 @@ title: Group 10 Capstone Presentation
 theme: gaia
 ---
 
-# Slide 1
-Test
+# Title Slide
+Title goes here
 
 ---
 
-# Slide 2
-Test 2
+# Our Problem
+OCR
+
+---
+
+# Our Solution
+General stuff
+pytesseract
+
+---
+
+# Backend
+Code
+
+---
+
+# FrontEnd/Demo
+pics go here
+
+---
+
+# Future Work
+A lot
