@@ -15,8 +15,9 @@ OCR
 ---
 
 # Our Solution
-General stuff
-pytesseract
+- Using OCR
+- Picking a Library 
+- Pytesseract
 
 ---
 
@@ -44,4 +45,4 @@ pics go here
 ---
 
 # Future Work
-A lot
+A lot(true)
