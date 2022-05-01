@@ -6,6 +6,9 @@ import sys
 import numpy as np
 from io import BytesIO
 from PIL import Image
+from tkinter import *
+from tkinter import filedialog as fd
+from tkinter.messagebox import showinfo
 
 config = r'--psm 4'
 
@@ -36,6 +39,8 @@ def extractText(image, corners, verbose = False):
 def extractImages(args, verbose=False):
     out = '' #used to hold the full output
     
+    #return "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+
     #Extracts args
     template = args[0]
     outFile = open(args[1], "w") #overwrites the old file
@@ -106,7 +111,66 @@ def extractImages(args, verbose=False):
     outFile.close()
     
     return out
+
+def drawImage():
+    #set up
+    window = Tk()
+    window.title("OCR")
+    window.geometry('500x500')
+
+    #fuctions
+    def getTemplate():
+        filetypes = (('text files', '*.TXT'),('All files', '*.*'))
+        templateFileName = fd.askopenfilenames(title='Open PDF images to scan', initialdir='./', filetypes = filetypes)
+        templateTxtBox.delete(0, 'end')
+        templateTxtBox.insert('end', templateFileName)
+
+    def getOutput():
+        filetypes = (('text files', '*.CSV, *.TXT'),('All files', '*.*'))
+        outputFileName = fd.askopenfilenames(title='Open PDF images to scan', initialdir='./', filetypes = filetypes)
+        oPTxtBox.delete(0, 'end')
+        oPTxtBox.insert('end', outputFileName)
+        
+    def getPDF():
+        filetypes = (('text files', '*.PDF'),('All files', '*.*'))
+        pdfFileNames = fd.askopenfilenames(title='Open PDF images to scan', initialdir='./', filetypes = filetypes)
+        pdfTxtBox.delete(0, 'end')
+        pdfTxtBox.insert('end', pdfFileNames)
+
+    def runOCR():
+        args = [templateTxtBox.get(), oPTxtBox.get(), pdfTxtBox.get()]
+        outputText = extractImages(args, verbose = True)
+        OCRReturnBox.delete('1.0', 'end')
+        OCRReturnBox.insert('end', outputText)
+
+    OCRReturnBox = Text(window, height=20, width=60)
+
+    #stylign the scene
+    templateTxtBox = Entry(window,width=50)
+    oPTxtBox = Entry(window,width=50)
+    pdfTxtBox = Entry(window,width=50)
+    templateButton = Button(window, text="Select Template", command=getTemplate)
+    outputButton = Button(window, text="Enter Output name", command=getOutput)
+    pdfButton = Button(window, text="Select Files to OCR", command=getPDF)
+    runButton = Button(window, text="Run OCR", command=runOCR)
+    templateTxtBox.grid(column=1, row=0)
+    oPTxtBox.grid(column=1, row=1)
+    pdfTxtBox.grid(column=1, row=2)
+    templateButton.grid(column=2, row=0)
+    outputButton.grid(column=2, row=1)
+    pdfButton.grid(column=2, row=2)
+    runButton.grid(column=2, row=3)
+    OCRReturnBox.grid(column=1, row=4, columnspan =3)
+
+    #keep window open and draws screen
+    window.mainloop()
     
 if __name__ == '__main__':
-    del sys.argv[0]
-    print(extractImages(sys.argv, verbose = True))
+    if len(sys.argv) > 1:
+        del sys.argv[0]
+        print(extractImages(sys.argv, verbose = True))
+    else:
+        drawImage()
+    
+    #del sys.argv[0]
+    #print(extractImages(sys.argv, verbose = True))
