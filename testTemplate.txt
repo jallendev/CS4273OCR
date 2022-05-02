@@ -1,5 +1,5 @@
-EOB Template|1300|800|1420|1000
+EOB Template|1300|730|1420|950
 C|stuff to fill out
 D
-E|1450|800|1560|1000
+E|1450|730|1560|950
 F|test

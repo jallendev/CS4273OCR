@@ -29,7 +29,7 @@ def extractText(image, corners, verbose = False):
 
     if verbose:
         cv2.imshow( 'im',cropped)
-        cv2.waitKey(5000)
+        cv2.waitKey(500)
 
     return text
     
@@ -49,58 +49,60 @@ def extractImages(args, verbose=False):
     
     header = ''
     
-    maxEntries = 1      #Presumably the file has at least 1 entry
+
 
     #Loops through each of the given files
     for f in files:
-        i = 0
-        while i < maxEntries:       #While Loop for multiple entries
-            line = ''
-            header = '' #Its really only needed to do this once but I'm lazy
         
-            #Opens the pdf and converts the first page to an image, only done on the first pass
-            if i == 0:
-                page = convert_from_path(f)
-                f=BytesIO()
-                page[1].save(f,format="png")
-                f.seek(0)
-                image = Image.open(f)
-                
-            print(pytesseract.image_to_osd(image))
-        
-            #loops through each of the lines in the template
-            for tl in templateLines:
-                params = tl.strip().split('|') #Breaks the line into each component
-                header += params[0]+','
-                print(params)
-                
-                #If there isn't anything to write to the output file just prints a ","
-                if len(params) == 1:
-                    line += ','
+        page = convert_from_path(f)
+        for p in page:
+            f=BytesIO()
+            p.save(f,format="png")
+            f.seek(0)
+            image = Image.open(f)
             
-                #This just saves the parameters if not given a bounding box. Might be a bad idea to include commas in this
-                elif len(params) == 2:
-                    line += params[1] + ','
-                
-                #This actually extracts the text from the pdf to put in the csv
-                elif len(params) == 5:
-                    s = extractText(image, params[1:],verbose)
-                    currEntries = s.count('\n') + 1     #Each newline implies the existence of an additional entry within a bounding box
+            maxEntries = 1      #Presumably the file has at least 1 entry
+            i = 0
+            while i < maxEntries:       #While Loop for multiple entries
+                line = ''
+                header = '' #Its really only needed to do this once but I'm lazy                 
                     
-                    if currEntries > maxEntries:        #The current bounding box has more entries than the previous maximum
-                        maxEntries = currEntries
-
-                    if currEntries > 1:                 #Does this bounding box has more than one entry
-                        splitS = s.split('\n')
-                        s = splitS[i]       #Chooses the current entry to print
-                    print(s)
-                    line+=s+','           
+                print(pytesseract.image_to_osd(image))
             
-                else:
-                    print('Should not have gotten here')                                 
-            i += 1
-            #Adds the line minus the last , to the output file
-            out += line[:-1] + '\n'
+                #loops through each of the lines in the template
+                for tl in templateLines:
+                    params = tl.strip().split('|') #Breaks the line into each component
+                    header += params[0]+','
+                    print(params)
+                    
+                    #If there isn't anything to write to the output file just prints a ","
+                    if len(params) == 1:
+                        line += ','
+                
+                    #This just saves the parameters if not given a bounding box. Might be a bad idea to include commas in this
+                    elif len(params) == 2:
+                        line += params[1] + ','
+                    
+                    #This actually extracts the text from the pdf to put in the csv
+                    elif len(params) == 5:
+                        s = extractText(image, params[1:],verbose)
+                        currEntries = s.count('\n') + 1     #Each newline implies the existence of an additional entry within a bounding box
+                        
+                        if currEntries > maxEntries:        #The current bounding box has more entries than the previous maximum
+                            maxEntries = currEntries
+
+                        if currEntries > 1:                 #Does this bounding box has more than one entry
+                            splitS = s.split('\n')
+                            if len(splitS) > i: 
+                                s = splitS[i]       #Chooses the current entry to print
+                        print(s)
+                        line+=s+','           
+                
+                    else:
+                        print('Should not have gotten here')                                 
+                i += 1
+                #Adds the line minus the last , to the output file
+                out += line[:-1] + '\n'
 
     #Writes out the text
     header = header[:-1] + '\n'
@@ -115,29 +117,30 @@ def drawImage():
     window = tk.Tk()
     window.title("OCR")
     window.geometry('500x500')
+    verbose = tk.IntVar()
 
     #fuctions
     def getTemplate():
-        filetypes = (('text files', '*.TXT'),('All files', '*.*'))
+        filetypes = (('text files', '*.txt'),('All files', '*.*'))
         templateFileName = fd.askopenfilenames(title='Open PDF images to scan', initialdir='./', filetypes = filetypes)
         templateTxtBox.delete(0, 'end')
         templateTxtBox.insert('end', templateFileName)
 
     def getOutput():
-        filetypes = (('text files', '*.CSV, *.TXT'),('All files', '*.*'))
+        filetypes = (('text files', '*.csv *.txt'),('All files', '*.*'))
         outputFileName = fd.askopenfilenames(title='Open PDF images to scan', initialdir='./', filetypes = filetypes)
         oPTxtBox.delete(0, 'end')
         oPTxtBox.insert('end', outputFileName)
         
     def getPDF():
-        filetypes = (('text files', '*.PDF'),('All files', '*.*'))
+        filetypes = (('text files', '*.pdf'),('All files', '*.*'))
         pdfFileNames = fd.askopenfilenames(title='Open PDF images to scan', initialdir='./', filetypes = filetypes)
         pdfTxtBox.delete(0, 'end')
         pdfTxtBox.insert('end', pdfFileNames)
 
     def runOCR():
         args = [templateTxtBox.get(), oPTxtBox.get(), pdfTxtBox.get()]
-        outputText = extractImages(args, verbose = True)
+        outputText = extractImages(args, verbose = verbose.get())
         OCRReturnBox.delete('1.0', 'end')
         OCRReturnBox.insert('end', outputText)
 
@@ -151,6 +154,8 @@ def drawImage():
     outputButton = tk.Button(window, text="Enter Output name", command=getOutput)
     pdfButton = tk.Button(window, text="Select Files to OCR", command=getPDF)
     runButton = tk.Button(window, text="Run OCR", command=runOCR)
+    verbosity = tk.Checkbutton(window, text='Show Images',variable=verbose, onvalue=1, offvalue=0)
+    verbosity.grid(column = 1, row = 3)
     templateTxtBox.grid(column=1, row=0)
     oPTxtBox.grid(column=1, row=1)
     pdfTxtBox.grid(column=1, row=2)
