@@ -4,13 +4,16 @@ title: Group 10 Capstone Presentation
 theme: gaia
 ---
 
-# Title Slide
-Title goes here
+# Project 6: OCR <!--- fit --->
+<!-- _class: invert -->
+# Members: Reza Torbati, Ethan Womack, Marissa Zuyus, Christian McBane, Isaac Spiers <!-- align="center"-->
 
 ---
 
-# Our Problem
-OCR
+# Problem Overview
+- For our project, we were tasked with using OCR to solve the problem of converting data from a pdf to data that can be entered directly into a csv file
+- Our overall goal was to use a picture of a form with information and extract the data in a way that could be easily transfered to an editable file 
+- The forms vary and are not all formatted the same way, and therefore we needed a way to extract data from user specified locations that depend on the form type
 
 ---
 
