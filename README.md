@@ -1,11 +1,12 @@
 # OCR Capstone Project
 ## Setup
 In theory, run WindowsSetup.bat to get everything set up for Windows <br>
-For Linux or Mac, WindowsSetup.bat contains a list of all dependencies that are needed to be installed.
+For Linux or Mac, WindowsSetup.bat contains a list of all dependencies that are needed to be installed. <br>
+This program has only been successfully run on Linux. This is due to a depenency with pdf2images not working on Windows
 
 ## To Run
-Call `python3 extractText.py templateFileName.txt outputFileName.csv pdf1.pdf pdf2.pdf ...` <br>
-Where the user can give an arbitrary (greater than 0) number of PDFs for the program to parse
+Call `python3 extractText.py` <br>
+Once the GUI is up, select the template file, the output csv file (which will be overwritten) and the PDF file(s) to be scanned in and select run. <br>
 
 ## Template File
 The template file is | seperated fields where <br>
@@ -18,3 +19,8 @@ After that there are three options: <br>
 - The second additional field is the top left y coordinate of the bounding box
 - The third additional field is the bottom right x coordinate of the bounding box
 - The fourth additional field is the bottom right y coordinate of the bounding box
+
+## Future Work
+Needs to be able to run on Windows (possibly by changing the pdf2image library to a different library?) <br>
+Needs to be able to create a template with a GUI <br>
+Needs to be able to detect and correct for skewing in the PDFs
