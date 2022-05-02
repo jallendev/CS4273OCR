@@ -45,4 +45,13 @@ pics go here
 ---
 
 # Future Work
-A lot(true)
+- A lot of work remains
+  - Ensure Multi-OS Compatability
+  - python-poppler
+- Improve Image Recognition
+- GUI Improvements
+  - Visuals / Intuitiveness
+  - Save Templates
+- Other Possible Formats for the Program?
+  - iOS/Android Application
+  - Web App
