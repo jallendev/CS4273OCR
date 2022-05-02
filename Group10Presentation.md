@@ -40,8 +40,14 @@ Other code just ensures the extracted text goes in the csv correctly
 ---
 
 # FrontEnd/Demo
-pics go here
-
+- GUI demonstration
+ 
+    ![empty gui](https://i.imgur.com/L1zFts7.png)
+    ![gui after selecting paths](https://i.imgur.com/usJsIbf.png)
+    ![gui after getting results](https://i.imgur.com/RpZf2ax.png)
+- CMD demonstration
+ 
+    ![a comandline example of the program running](https://i.imgur.com/xLJJ73q.png)
 ---
 
 # Future Work
