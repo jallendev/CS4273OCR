@@ -6,7 +6,7 @@ import sys
 import numpy as np
 from io import BytesIO
 from PIL import Image
-from tkinter import *
+import tkinter as tk
 from tkinter import filedialog as fd
 from tkinter.messagebox import showinfo
 
@@ -112,7 +112,7 @@ def extractImages(args, verbose=False):
 
 def drawImage():
     #set up
-    window = Tk()
+    window = tk.Tk()
     window.title("OCR")
     window.geometry('500x500')
 
@@ -141,16 +141,16 @@ def drawImage():
         OCRReturnBox.delete('1.0', 'end')
         OCRReturnBox.insert('end', outputText)
 
-    OCRReturnBox = Text(window, height=20, width=60)
+    OCRReturnBox = tk.Text(window, height=20, width=60)
 
     #stylign the scene
-    templateTxtBox = Entry(window,width=50)
-    oPTxtBox = Entry(window,width=50)
-    pdfTxtBox = Entry(window,width=50)
-    templateButton = Button(window, text="Select Template", command=getTemplate)
-    outputButton = Button(window, text="Enter Output name", command=getOutput)
-    pdfButton = Button(window, text="Select Files to OCR", command=getPDF)
-    runButton = Button(window, text="Run OCR", command=runOCR)
+    templateTxtBox = tk.Entry(window,width=50)
+    oPTxtBox = tk.Entry(window,width=50)
+    pdfTxtBox = tk.Entry(window,width=50)
+    templateButton = tk.Button(window, text="Select Template", command=getTemplate)
+    outputButton = tk.Button(window, text="Enter Output name", command=getOutput)
+    pdfButton = tk.Button(window, text="Select Files to OCR", command=getPDF)
+    runButton = tk.Button(window, text="Run OCR", command=runOCR)
     templateTxtBox.grid(column=1, row=0)
     oPTxtBox.grid(column=1, row=1)
     pdfTxtBox.grid(column=1, row=2)
