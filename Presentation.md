@@ -23,6 +23,7 @@ theme: gaia
 - Output: Excel .csv file with needed data for analysis
 
 ![width:200px](./Test%20Cases/orignial1.jpg)
+
 ---
 
 # The Approach
