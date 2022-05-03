@@ -22,7 +22,7 @@ theme: gaia
 - Input: Dental Insurance EOBs
 - Output: Excel .csv file with needed data for analysis
 
-![width:200px](file.jpg)
+![width:200px](./Test%20Cases/orignial1.jpg)
 ---
 
 # The Approach
@@ -51,7 +51,8 @@ e.g. blur+noise, angle+brightness, noise+angles, etc.
 ---
 # Test Cases
 
-![width:200px](file.jpg)
+![width:375px](./Test%20Cases/Document1/noise1-blur2.jpg)![width:375px](./Test%20Cases/Document1/noise1-angle2.jpg)![width:375px](./Test%20Cases/Document3/brightness2.jpg)
+
 ---
 <center>
 <span style="font-size:2em; font-weight:bold; c">Google Cloud Vision vs Tesseract</span>
