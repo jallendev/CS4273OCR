@@ -22,7 +22,7 @@ theme: gaia
 - Input: Dental Insurance EOBs
 - Output: Excel .csv file with needed data for analysis
 
-![width:200px](./Test%20Cases/orignial1.jpg)
+![width:900px height:250px](./Test%20Cases/original.jpg)
 
 ---
 
