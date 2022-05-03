@@ -54,7 +54,7 @@ e.g. blur+noise, angle+brightness, noise+angles, etc.
 ---
 # Test Cases
 
-![width:350px](./assets/Document1/noise1-blur2.jpg)&nbsp;&nbsp;![width:350px](./assets/Document1/noise1-angle2.jpg)&nbsp;&nbsp;![width:350px](./assets/Document3/brightness2.jpg)
+![width:350px](./assets/noise1-blur2.jpg)&nbsp;&nbsp;![width:350px](./assets/noise1-angle2.jpg)&nbsp;&nbsp;![width:350px](./assets/brightness2.jpg)
 
 ---
 
