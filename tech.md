@@ -4,16 +4,15 @@ size: 16:9
 theme: gaia
 ---
 
-<center>
-<span style="font-size:2em; font-weight:bold; c">Tech</span>
-</center>
-
 <hr style="border: 3px solid gray">
 
-### Communications  `Discord` `GroupMe`
-<br>
+### Communications: 
+ `Discord` ![width:40px height: 40px](./assets/discord.png) &nbsp;&nbsp; `GroupMe` ![width:40px height: 40px](./assets/groupme.png)
 
-### Tracking Progress `Github`
-<br>
 
-### Development Tools `Google Vision API` `Python` `Visual Studio Code` `Photoshop`
+### Tracking Progress: 
+`Github` ![width:65px height: 40px](./assets/github.png)
+
+
+### Development Tools:
+ `Google Vision API` ![width:40px height: 40px](./assets/googlevisionapi.png) `Python` ![width:40px height: 40px](./assets/python.png) `Visual Studio Code` ![width:40px height: 40px](./assets/vscode.png) `Photoshop` ![width:45px height: 40px](./assets/photoshop.png)

@@ -22,7 +22,7 @@ theme: gaia
 - Input: Dental Insurance EOBs
 - Output: Excel .csv file with needed data for analysis
 
-![width:900px height:250px](./Test%20Cases/original.jpg)
+![width:900px height:250px](./assets/original.jpg)
 
 ---
 
@@ -31,10 +31,12 @@ theme: gaia
 <hr style="border: 3px solid gray">
 
 **Setup**
-    - Google Cloud Vision API to analyze the documents
+    - Enable Google Vision API
+    - Use API to analyze documents
     - Output via python script to .csv
-**Results**
+**Structure**
     - Team 4 focused on creation of test cases to train API
+    - Other teams focused on other possible APIs and an interface for the application
     
 ---
 
@@ -52,12 +54,11 @@ e.g. blur+noise, angle+brightness, noise+angles, etc.
 ---
 # Test Cases
 
-![width:375px](./Test%20Cases/Document1/noise1-blur2.jpg)![width:375px](./Test%20Cases/Document1/noise1-angle2.jpg)![width:375px](./Test%20Cases/Document3/brightness2.jpg)
+![width:350px](./assets/Document1/noise1-blur2.jpg)&nbsp;&nbsp;![width:350px](./assets/Document1/noise1-angle2.jpg)&nbsp;&nbsp;![width:350px](./assets/Document3/brightness2.jpg)
 
 ---
-<center>
-<span style="font-size:2em; font-weight:bold; c">Google Cloud Vision vs Tesseract</span>
-</center>
+
+# Why Google Cloud Vision API
 
 <hr style="border: 3px solid gray">
 
