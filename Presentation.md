@@ -4,41 +4,40 @@ size: 16:9
 theme: gaia
 ---
 
-# Reference
-    bar
-- Bullet Points
-    - sub point
-    - **Bold**
-    - _Italic_
-    - `code`
---- 
-<center>
-<span style="font-size:2em; font-weight:bold; c">The Problem</span>
-</center>
+# OCR Machine Learning
+
 <hr style="border: 3px solid gray">
 
+- Team 4
+- Wahid Haidari, Joseph Allen, Ezekiel House, Khalil Albattashi
 
 
+--- 
+
+# The Problem
+
+<hr style="border: 3px solid gray">
+
+- Process dental forms to gather data
+- Input: Dental Insurance EOBs
+- Output: Excel .csv file with needed data for analysis
+
+![width:200px](file.jpg)
 ---
 
-<center>
-<span style="font-size:2em; font-weight:bold; c">The Approach</span>
-</center>
+# The Approach
 
 <hr style="border: 3px solid gray">
 
 **Setup**
-    - 
-**How it works**
-    - 
+    - Google Cloud Vision API to analyze the documents
+    - Output via python script to .csv
 **Results**
-    -
+    - Team 4 focused on creation of test cases to train API
     
 ---
 
-<center>
-<span style="font-size:2em; font-weight:bold; c">Test Cases</span>
-</center>
+# Test Cases
 
 <hr style="border: 3px solid gray">
 
@@ -50,7 +49,10 @@ theme: gaia
 e.g. blur+noise, angle+brightness, noise+angles, etc.
 - three documents, each 23 edits (3*23=69 test cases) 
 ---
+# Test Cases
 
+![width:200px](file.jpg)
+---
 <center>
 <span style="font-size:2em; font-weight:bold; c">Google Cloud Vision vs Tesseract</span>
 </center>
