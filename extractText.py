@@ -9,6 +9,7 @@ from PIL import Image
 import tkinter as tk
 from tkinter import filedialog as fd
 from tkinter.messagebox import showinfo
+import re
 
 config = r'--psm 4'
 
@@ -26,10 +27,14 @@ def extractText(image, corners, verbose = False):
     # Simple image to string
     text = pytesseract.image_to_string(cropped, config=config)
     text = text.strip()
+    
+    #Removes leading and training non alpha numeric characters. Think this solves more problems than it creates
+    text = re.sub(r"^\W+", '', text)
+    text = re.sub(r"\W+$", '', text)
 
     if verbose:
         cv2.imshow( 'im',cropped)
-        cv2.waitKey(500)
+        cv2.waitKey(1500)
 
     return text
     
@@ -86,7 +91,19 @@ def extractImages(args, verbose=False):
                     #This actually extracts the text from the pdf to put in the csv
                     elif len(params) == 5:
                         s = extractText(image, params[1:],verbose)
-                        currEntries = s.count('\n') + 1     #Each newline implies the existence of an additional entry within a bounding box
+                        
+                        #If there are two \ns in a row, removes one. Assumes that this should never happen
+                        previous = ''
+                        c = 0
+                        while c < len(s):
+                            if s[c] == previous and s[c] == '\n':
+                                s = s[:c] + s[c+1:]
+                                c-=1
+                            if c >= 0:
+                                previous = s[c]
+                            c+=1
+                            
+                        currEntries = s.count('\n') + 1    #Each newline implies the existence of an additional entry within a bounding box
                         
                         if currEntries > maxEntries:        #The current bounding box has more entries than the previous maximum
                             maxEntries = currEntries
@@ -95,7 +112,7 @@ def extractImages(args, verbose=False):
                             splitS = s.split('\n')
                             if len(splitS) > i: 
                                 s = splitS[i]       #Chooses the current entry to print
-                        print(s)
+                        print(currEntries, '\n', s)
                         line+=s+','           
                 
                     else:
